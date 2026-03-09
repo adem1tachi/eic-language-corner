@@ -2,7 +2,7 @@
 
 A premium, modern web platform designed for university clubs to organize and manage weekly language exchange sessions. Built with a focus on student engagement, real-time notifications, and community rankings.
 
-![Project Preview](https://raw.githubusercontent.com/adem-tachi/eic-language-corner/main/preview.png) *(Note: Add your own preview image link here)*
+![EIC Language Corner Banner](banner.png)
 
 ## ✨ Key Features
 
