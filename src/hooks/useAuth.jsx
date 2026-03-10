@@ -43,14 +43,19 @@ export const AuthProvider = ({ children }) => {
 
         // Listen for changes
         const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-            const currentUser = session?.user ?? null
-            setUser(currentUser)
-            if (currentUser) {
-                await fetchProfile(currentUser.id)
-            } else {
-                setProfile(null)
+            try {
+                const currentUser = session?.user ?? null
+                setUser(currentUser)
+                if (currentUser) {
+                    await fetchProfile(currentUser.id)
+                } else {
+                    setProfile(null)
+                }
+            } catch (err) {
+                console.error('Auth state change error:', err.message)
+            } finally {
+                setLoading(false)
             }
-            setLoading(false)
         })
 
         return () => subscription.unsubscribe()
