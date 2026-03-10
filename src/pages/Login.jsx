@@ -83,6 +83,12 @@ export default function Login() {
                         Sign In
                     </Button>
 
+                    <div className="text-right">
+                        <Link to="/forgot-password" className="text-sm text-neutral-500 hover:text-indigo-400 transition-colors">
+                            Forgot your password?
+                        </Link>
+                    </div>
+
                     <p className="text-center text-sm text-neutral-400">
                         Don't have an account?{' '}
                         <Link to="/signup" className="text-indigo-400 hover:text-indigo-300 font-semibold">

@@ -12,6 +12,8 @@ import CreateSession from './pages/CreateSession'
 import SessionDetail from './pages/SessionDetail'
 import UserProfile from './pages/UserProfile'
 import Rankings from './pages/Rankings'
+import ForgotPassword from './pages/ForgotPassword'
+import UpdatePassword from './pages/UpdatePassword'
 import { Languages, Calendar, Users, LogIn, LogOut, User, BarChart2, MessageCircle, Trophy, Menu, X, Home as HomeIcon } from 'lucide-react'
 
 function Layout() {
@@ -246,6 +248,8 @@ export default function App() {
                     </Route>
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<SignUp />} />
+                    <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route path="/update-password" element={<UpdatePassword />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </Router>
