@@ -57,7 +57,7 @@ function Layout() {
                                 </button>
                             </div>
                         ) : (
-                            <Link to="/login" className="hidden xs:flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-full text-sm font-bold transition-all shadow-lg shadow-indigo-500/20 mr-2">
+                            <Link to="/login" className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-full text-sm font-bold transition-all shadow-lg shadow-indigo-500/20 mr-2">
                                 <LogIn className="w-4 h-4" />
                                 <span>Sign In</span>
                             </Link>
