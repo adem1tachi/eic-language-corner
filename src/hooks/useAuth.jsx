@@ -27,11 +27,16 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         // Check initial session
         const initSession = async () => {
-            const { data: { session } } = await supabase.auth.getSession()
-            const currentUser = session?.user ?? null
-            setUser(currentUser)
-            if (currentUser) await fetchProfile(currentUser.id)
-            setLoading(false)
+            try {
+                const { data: { session } } = await supabase.auth.getSession()
+                const currentUser = session?.user ?? null
+                setUser(currentUser)
+                if (currentUser) await fetchProfile(currentUser.id)
+            } catch (err) {
+                console.error('Failed to initialize session:', err.message)
+            } finally {
+                setLoading(false)
+            }
         }
 
         initSession()
