@@ -46,5 +46,23 @@ export const telegramService = {
         const url = `${window.location.origin}/sessions/${id}`
         const text = `🗓️ <b>New Session Scheduled!</b>\n\n<b>${title}</b>\n🌍 <b>Language:</b> ${language}\n⏰ <b>Date:</b> ${date}\n📍 <b>Location:</b> ${location}\n\n👋 <b>Confirm your attendance here:</b>\n👉 <a href="${url}">View Session & Confirm</a>\n\nSee you there! 🔥`
         return this.sendMessage(text)
+    },
+
+    async sendSessionCancelledNotification(title, language, date) {
+        const text = `❌ <b>Session Cancelled</b>\n\n<b>${title}</b> (${language})\n📅 <b>Was scheduled for:</b> ${date}\n\nWe apologize for the inconvenience. Stay tuned for future sessions! 🙏`
+        return this.sendMessage(text)
+    },
+
+    async sendRegistrationToggledNotification(title, isOpen, id) {
+        const url = `${window.location.origin}/sessions/${id}`
+        const status = isOpen ? '🔓 <b>Registration Resumed!</b>' : '🔒 <b>Registration Closed</b>'
+        const action = isOpen ? 'You can now join the session again!' : 'Registration for this session is currently closed.'
+        const text = `${status}\n\n<b>${title}</b>\n${action}\n\n👉 <a href="${url}">View Session Details</a>`
+        return this.sendMessage(text)
+    },
+
+    async sendPollClosedNotification(language) {
+        const text = `🏁 <b>Selection Time Ended!</b>\n\nThe availability poll for <b>${language}</b> is now closed. 📊\n\nThank you for voting! A session will be scheduled soon based on the results. Stay tuned! ⏳`
+        return this.sendMessage(text)
     }
 }

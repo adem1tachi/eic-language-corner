@@ -4,6 +4,7 @@ import { Calendar, Clock, MapPin, Globe, Users, ArrowLeft, CheckCircle2, AlertCi
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
 import { Button } from '../components/AuthUI'
+import { telegramService } from '../lib/telegramService'
 
 export default function SessionDetail() {
     const { id } = useParams()
@@ -105,6 +106,18 @@ export default function SessionDetail() {
                 .eq('id', id)
 
             if (error) throw error
+
+            // Send Telegram Notification
+            const sessionDate = new Date(session.date).toLocaleDateString('en-US', {
+                weekday: 'short', month: 'short', day: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            })
+            await telegramService.sendSessionCancelledNotification(
+                session.title,
+                session.language,
+                sessionDate
+            )
+
             navigate('/sessions')
         } catch (err) {
             alert(err.message)
@@ -120,7 +133,15 @@ export default function SessionDetail() {
                 .eq('id', id)
 
             if (error) throw error
-            setSession(prev => ({ ...prev, registration_open: !prev.registration_open }))
+            const newStatus = !session.registration_open
+            setSession(prev => ({ ...prev, registration_open: newStatus }))
+
+            // Send Telegram Notification
+            await telegramService.sendRegistrationToggledNotification(
+                session.title,
+                newStatus,
+                id
+            )
         } catch (err) {
             alert(err.message)
         } finally {

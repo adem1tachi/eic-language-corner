@@ -4,6 +4,7 @@ import { Clock, Info, Check, Save, ArrowLeft, BarChart3, Users, Trash2 } from 'l
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
 import { Button } from '../components/AuthUI'
+import { telegramService } from '../lib/telegramService'
 
 export default function PollDetail() {
     const { id } = useParams()
@@ -94,6 +95,10 @@ export default function PollDetail() {
                 .update({ is_active: false })
                 .eq('id', id)
             if (error) throw error
+
+            // Send Telegram Notification
+            await telegramService.sendPollClosedNotification(poll.language)
+
             navigate('/polls')
         } catch (err) {
             alert(err.message)
