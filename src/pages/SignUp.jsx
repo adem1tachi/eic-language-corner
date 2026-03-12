@@ -26,7 +26,8 @@ export default function SignUp() {
             // Trigger Welcome Telegram Message (Non-blocking)
             telegramService.sendWelcomeMessage(fullName)
 
-            navigate('/login', { state: { message: 'Account created! Please check your email and log in.' } })
+            // Redirect to home (immediate login because email confirmation is disabled)
+            navigate('/', { state: { message: 'Welcome! Your account has been created successfully.' } })
         } catch (err) {
             setError(err.message)
         } finally {

@@ -16,8 +16,26 @@ import ForgotPassword from './pages/ForgotPassword'
 import UpdatePassword from './pages/UpdatePassword'
 import { Languages, Calendar, Users, LogIn, LogOut, User, BarChart2, MessageCircle, Trophy, Menu, X, Home as HomeIcon } from 'lucide-react'
 
+function ProtectedRoute({ children, roleRequired }) {
+    const { user, profile, loading } = useAuth()
+
+    if (loading) return (
+        <div className="min-h-screen bg-neutral-950 flex items-center justify-center">
+            <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+    )
+
+    if (!user) return <Navigate to="/login" replace />
+
+    if (roleRequired && !roleRequired.includes(profile?.role)) {
+        return <Navigate to="/" replace />
+    }
+
+    return children
+}
+
 function Layout() {
-    const { user, profile, signOut } = useAuth()
+    const { user, profile } = useAuth()
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
     return (
@@ -50,13 +68,6 @@ function Layout() {
                                         <p className="text-xs font-bold text-white leading-none group-hover:text-indigo-400">{profile?.full_name?.split(' ')[0] || user.email.split('@')[0]}</p>
                                     </div>
                                 </Link>
-                                <button
-                                    onClick={() => signOut()}
-                                    className="p-2 text-neutral-500 hover:text-red-400 transition-colors"
-                                    title="Sign Out"
-                                >
-                                    <LogOut className="w-5 h-5" />
-                                </button>
                             </div>
                         ) : (
                             <Link to="/login" className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-full text-sm font-bold transition-all shadow-lg shadow-indigo-500/20 mr-2">
@@ -236,12 +247,20 @@ export default function App() {
                 <Routes>
                     <Route path="/" element={<Layout />}>
                         <Route index element={<Home />} />
-                        <Route path="profile" element={<Profile />} />
+                        <Route path="profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
                         <Route path="polls" element={<Polls />} />
-                        <Route path="polls/create" element={<CreatePoll />} />
+                        <Route path="polls/create" element={
+                            <ProtectedRoute roleRequired={['organizer', 'admin']}>
+                                <CreatePoll />
+                            </ProtectedRoute>
+                        } />
                         <Route path="polls/:id" element={<PollDetail />} />
                         <Route path="sessions" element={<Sessions />} />
-                        <Route path="sessions/create" element={<CreateSession />} />
+                        <Route path="sessions/create" element={
+                            <ProtectedRoute roleRequired={['organizer', 'admin']}>
+                                <CreateSession />
+                            </ProtectedRoute>
+                        } />
                         <Route path="sessions/:id" element={<SessionDetail />} />
                         <Route path="profile/:id" element={<UserProfile />} />
                         <Route path="rankings" element={<Rankings />} />

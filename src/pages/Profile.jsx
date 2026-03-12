@@ -21,7 +21,8 @@ import {
     Trash2,
     ChevronRight,
     ArrowLeft,
-    Star
+    Star,
+    LogOut
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Button, Input } from '../components/AuthUI'
@@ -35,7 +36,7 @@ const LEVELS = ['Beginner', 'Elementary', 'Intermediate', 'Advanced', 'Fluent', 
 
 export default function Profile() {
     const navigate = useNavigate()
-    const { user, profile, updateProfile } = useAuth()
+    const { user, profile, updateProfile, signOut } = useAuth()
     const [loading, setLoading] = useState(false)
     const [message, setMessage] = useState(null)
     const [mySessions, setMySessions] = useState([])
@@ -268,8 +269,21 @@ export default function Profile() {
                         </div>
                     </div>
 
-                    <div className="lg:col-span-2 flex justify-center sm:justify-end py-4">
-                        <div className="w-full sm:w-64">
+                    <div className="lg:col-span-2 flex flex-col sm:flex-row items-center justify-center sm:justify-end gap-4 py-4">
+                        <div className="w-full sm:w-64 order-2 sm:order-1">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    signOut()
+                                    navigate('/')
+                                }}
+                                className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-2xl font-bold text-red-400 bg-red-500/5 border border-red-500/20 hover:bg-red-500/10 transition-all active:scale-95"
+                            >
+                                <LogOut className="w-5 h-5" />
+                                Sign Out
+                            </button>
+                        </div>
+                        <div className="w-full sm:w-64 order-1 sm:order-2">
                             <Button type="submit" loading={loading} className="shadow-xl shadow-indigo-600/10 w-full">
                                 <Save className="w-5 h-5 mr-2" /> Save Changes
                             </Button>

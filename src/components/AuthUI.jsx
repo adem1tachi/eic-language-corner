@@ -1,19 +1,36 @@
-import { Mail, Lock, User, ArrowRight, Loader2, ChevronDown } from 'lucide-react'
+import { useState } from 'react'
+import { Mail, Lock, User, ArrowRight, Loader2, ChevronDown, Eye, EyeOff } from 'lucide-react'
 
-export const Input = ({ icon: Icon, label, ...props }) => (
-    <div className="space-y-2">
-        <label className="text-sm font-medium text-neutral-400 ml-1">{label}</label>
-        <div className="relative group">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500 group-focus-within:text-indigo-500 transition-colors">
-                <Icon className="w-5 h-5" />
+export const Input = ({ icon: Icon, label, type, ...props }) => {
+    const [showPassword, setShowPassword] = useState(false)
+    const isPassword = type === 'password'
+    const inputType = isPassword ? (showPassword ? 'text' : 'password') : type
+
+    return (
+        <div className="space-y-2">
+            <label className="text-sm font-medium text-neutral-400 ml-1">{label}</label>
+            <div className="relative group">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500 group-focus-within:text-indigo-500 transition-colors">
+                    <Icon className="w-5 h-5" />
+                </div>
+                <input
+                    {...props}
+                    type={inputType}
+                    className="w-full bg-neutral-900 border border-neutral-800 rounded-2xl py-3 pl-12 pr-12 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all placeholder:text-neutral-600"
+                />
+                {isPassword && (
+                    <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-indigo-500 transition-colors"
+                    >
+                        {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    </button>
+                )}
             </div>
-            <input
-                {...props}
-                className="w-full bg-neutral-900 border border-neutral-800 rounded-2xl py-3 pl-12 pr-4 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all placeholder:text-neutral-600"
-            />
         </div>
-    </div>
-)
+    )
+}
 
 export const Button = ({ children, loading, ...props }) => (
     <button

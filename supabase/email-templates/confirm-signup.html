@@ -1,0 +1,74 @@
+<!-- ============================================================
+     EIC Language Corner - Email Template: Confirm Signup
+     ============================================================
+     HOW TO USE IN SUPABASE:
+     1. Go to Authentication → Email Templates → "Confirm signup"
+     2. Copy everything BELOW this comment block and paste it
+        in the "Message" text area in Supabase.
+     3. Make sure "Subject" is set to something like:
+        "Confirm your EIC Language Corner account ✉️"
+     ============================================================ -->
+
+<div style="font-family:'Segoe UI',Arial,sans-serif;max-width:580px;margin:0 auto;background:#0f0f0f;border-radius:20px;overflow:hidden;border:1px solid #1e1e1e;">
+
+  <!-- Header -->
+  <div style="background:linear-gradient(135deg,#4f46e5,#6366f1);padding:36px 32px;text-align:center;">
+    <div style="font-size:32px;margin-bottom:8px;">🌍</div>
+    <h1 style="color:#ffffff;margin:0;font-size:24px;font-weight:800;letter-spacing:-0.5px;">
+      EIC Language Corner
+    </h1>
+    <p style="color:rgba(255,255,255,0.75);margin:6px 0 0;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;">
+      Learn &bull; Speak &bull; Connect
+    </p>
+  </div>
+
+  <!-- Body -->
+  <div style="padding:40px 32px;">
+    <h2 style="color:#ffffff;font-size:22px;font-weight:700;margin:0 0 12px;">
+      Welcome to the community! 🎉
+    </h2>
+    <p style="color:#a3a3a3;font-size:15px;line-height:1.7;margin:0 0 8px;">
+      Thank you for signing up. You're one step away from joining weekly
+      language exchange sessions with fellow students.
+    </p>
+    <p style="color:#a3a3a3;font-size:15px;line-height:1.7;margin:0 0 32px;">
+      Please click the button below to confirm your email address and
+      activate your account.
+    </p>
+
+    <!-- CTA Button -->
+    <div style="text-align:center;margin-bottom:32px;">
+      <a href="{{ .ConfirmationURL }}"
+         style="display:inline-block;background:#4f46e5;color:#ffffff;padding:15px 40px;border-radius:14px;font-weight:700;font-size:15px;text-decoration:none;letter-spacing:0.02em;">
+        ✅ Confirm My Account
+      </a>
+    </div>
+
+    <p style="color:#555;font-size:12px;line-height:1.6;margin:0;">
+      If the button doesn't work, copy and paste this link into your browser:<br/>
+      <span style="color:#6366f1;word-break:break-all;">{{ .ConfirmationURL }}</span>
+    </p>
+
+    <hr style="border:none;border-top:1px solid #1e1e1e;margin:28px 0;" />
+
+    <p style="color:#444;font-size:12px;line-height:1.5;margin:0;">
+      If you didn't create an account on EIC Language Corner, you can safely
+      ignore this email — no action is needed.<br/>
+      This confirmation link will expire in <strong style="color:#666;">24 hours</strong>.
+    </p>
+  </div>
+
+  <!-- Footer -->
+  <div style="background:#0a0a0a;padding:20px 32px;border-top:1px solid #1a1a1a;text-align:center;">
+    <p style="color:#333;font-size:12px;margin:0;">
+      &copy; 2026 EIC Language Corner &mdash; All Rights Reserved
+    </p>
+    <p style="margin:6px 0 0;">
+      <a href="https://eic-language-corner.netlify.app"
+         style="color:#4f46e5;font-size:12px;text-decoration:none;">
+        eic-language-corner.netlify.app
+      </a>
+    </p>
+  </div>
+
+</div>
