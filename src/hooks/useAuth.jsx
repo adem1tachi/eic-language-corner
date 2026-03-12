@@ -16,11 +16,13 @@ export const AuthProvider = ({ children }) => {
                 .eq('id', userId)
                 .single()
 
-            if (error) throw error
+            if (error) {
+                console.warn('[Auth] Profile fetch error:', error.message)
+                return
+            }
             setProfile(data)
         } catch (err) {
-            console.error('Error fetching profile:', err.message)
-            setProfile(null)
+            console.error('[Auth] Execution error in fetchProfile:', err.message)
         }
     }
 
@@ -83,7 +85,7 @@ export const AuthProvider = ({ children }) => {
         }
     }, [])
 
-    const signUp = async (email, password, fullName) => {
+    const signUp = async (email, password, fullName, phone) => {
         try {
             const { data, error } = await supabase.auth.signUp({
                 email,
@@ -91,6 +93,7 @@ export const AuthProvider = ({ children }) => {
                 options: {
                     data: {
                         full_name: fullName,
+                        phone: phone
                     },
                 },
             })
@@ -105,19 +108,23 @@ export const AuthProvider = ({ children }) => {
     }
 
     const signOut = () => {
-        // Clear potential stuck data on sign out
         setProfile(null)
         setUser(null)
+        // Manual clear of sessionStorage to be extra safe
+        sessionStorage.removeItem('eic-language-corner-auth')
         return supabase.auth.signOut()
     }
 
     const updateProfile = async (updates) => {
         if (!user) throw new Error('No user logged in')
         try {
+            const { phone, ...profileUpdates } = updates
+
+            // 1. Update Profile Table (Excluding phone)
             const { data, error } = await supabase
                 .from('profiles')
                 .update({
-                    ...updates,
+                    ...profileUpdates,
                     updated_at: new Date().toISOString()
                 })
                 .eq('id', user.id)
@@ -125,6 +132,19 @@ export const AuthProvider = ({ children }) => {
                 .single()
 
             if (error) throw error
+
+            // 2. Update Auth Metadata for phone
+            if (phone !== undefined) {
+                const { data: authData, error: authError } = await supabase.auth.updateUser({
+                    data: { phone }
+                })
+                if (authError) {
+                    console.warn('[Auth] Metadata update failed:', authError.message)
+                } else if (authData?.user) {
+                    setUser(authData.user)
+                }
+            }
+
             setProfile(data)
             return { data, error }
         } catch (err) {

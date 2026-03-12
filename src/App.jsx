@@ -14,7 +14,7 @@ import UserProfile from './pages/UserProfile'
 import Rankings from './pages/Rankings'
 import ForgotPassword from './pages/ForgotPassword'
 import UpdatePassword from './pages/UpdatePassword'
-import { Languages, Calendar, Users, LogIn, LogOut, User, BarChart2, MessageCircle, Trophy, Menu, X, Home as HomeIcon } from 'lucide-react'
+import { Languages, Calendar, Users, LogIn, LogOut, User, BarChart2, MessageCircle, Trophy, Menu, X, Home as HomeIcon, AlertCircle } from 'lucide-react'
 
 function ProtectedRoute({ children, roleRequired }) {
     const { user, profile, loading } = useAuth()
@@ -40,6 +40,13 @@ function Layout() {
 
     return (
         <div className="min-h-screen bg-neutral-950 text-neutral-50 font-sans flex flex-col">
+            {/* Global Connectivity Warning */}
+            {window.supabase_config_error && (
+                <div className="bg-red-600 text-white px-4 py-2 text-center text-xs font-bold flex items-center justify-center gap-2 animate-pulse z-[100]">
+                    <AlertCircle className="w-4 h-4" />
+                    <span>CRITICAL: Database connection failed. Please check your Netlify Environment Variables.</span>
+                </div>
+            )}
             {/* Navigation */}
             <nav className="border-b border-neutral-800 bg-neutral-900/50 backdrop-blur-md sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">

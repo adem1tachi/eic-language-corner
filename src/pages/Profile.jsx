@@ -44,6 +44,7 @@ export default function Profile() {
 
     const [formData, setFormData] = useState({
         full_name: '',
+        phone: '',
         bio: '',
         avatar_icon: 'User',
         languages_spoken: [],
@@ -54,6 +55,7 @@ export default function Profile() {
         if (profile) {
             setFormData({
                 full_name: profile.full_name || '',
+                phone: user?.user_metadata?.phone || '',
                 bio: profile.bio || '',
                 avatar_icon: profile.avatar_icon || 'User',
                 languages_spoken: profile.languages_spoken || [],
@@ -61,7 +63,7 @@ export default function Profile() {
             })
             fetchMySessions()
         }
-    }, [profile])
+    }, [profile, user])
 
     const fetchMySessions = async () => {
         try {
@@ -182,6 +184,16 @@ export default function Profile() {
                                 icon={User}
                                 value={formData.full_name}
                                 onChange={(e) => setFormData(prev => ({ ...prev, full_name: e.target.value }))}
+                            />
+                        </div>
+
+                        <div className="w-full">
+                            <Input
+                                label="Phone Number"
+                                icon={User}
+                                placeholder="+213 5XX XX XX XX"
+                                value={formData.phone}
+                                onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                             />
                         </div>
 

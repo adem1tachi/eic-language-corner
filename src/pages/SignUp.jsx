@@ -8,6 +8,7 @@ import { telegramService } from '../lib/telegramService'
 export default function SignUp() {
     const [fullName, setFullName] = useState('')
     const [email, setEmail] = useState('')
+    const [phone, setPhone] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
@@ -20,7 +21,7 @@ export default function SignUp() {
         setError(null)
 
         try {
-            const { error } = await signUp(email, password, fullName)
+            const { error } = await signUp(email, password, fullName, phone)
             if (error) throw error
 
             // Trigger Welcome Telegram Message (Non-blocking)
@@ -75,6 +76,16 @@ export default function SignUp() {
                         placeholder="name@example.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+
+                    <Input
+                        icon={User}
+                        label="Phone Number"
+                        type="tel"
+                        placeholder="+213 5XX XX XX XX"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
                         required
                     />
 
