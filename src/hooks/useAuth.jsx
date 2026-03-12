@@ -110,8 +110,6 @@ export const AuthProvider = ({ children }) => {
     const signOut = () => {
         setProfile(null)
         setUser(null)
-        // Manual clear of sessionStorage to be extra safe
-        sessionStorage.removeItem('eic-language-corner-auth')
         return supabase.auth.signOut()
     }
 

@@ -17,9 +17,7 @@ export const supabase = createClient(
     supabaseAnonKey || 'placeholder',
     {
         auth: {
-            persistSession: true,
-            storageKey: 'eic-language-corner-auth',
-            storage: typeof window !== 'undefined' ? window.sessionStorage : undefined,
+            persistSession: false, // Disables all local storage (localStorage/sessionStorage)
             autoRefreshToken: true,
             detectSessionInUrl: true
         }
