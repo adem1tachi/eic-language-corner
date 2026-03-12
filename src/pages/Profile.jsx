@@ -4,6 +4,8 @@ import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabase'
 import {
     User,
+    Mail,
+    Phone,
     Settings,
     Languages,
     MessageSquare,
@@ -55,7 +57,7 @@ export default function Profile() {
         if (profile) {
             setFormData({
                 full_name: profile.full_name || '',
-                phone: user?.user_metadata?.phone || '',
+                phone: profile.phone || '',
                 bio: profile.bio || '',
                 avatar_icon: profile.avatar_icon || 'User',
                 languages_spoken: profile.languages_spoken || [],
@@ -189,8 +191,22 @@ export default function Profile() {
 
                         <div className="w-full">
                             <Input
+                                label="Email Address"
+                                icon={Mail}
+                                type="email"
+                                value={user?.email || ''}
+                                disabled
+                                className="opacity-60 cursor-not-allowed bg-neutral-900"
+                            />
+                            <p className="text-[10px] text-neutral-500 mt-1 ml-1 italic">
+                                Email cannot be changed here.
+                            </p>
+                        </div>
+
+                        <div className="w-full">
+                            <Input
                                 label="Phone Number"
-                                icon={User}
+                                icon={Phone}
                                 placeholder="+213 5XX XX XX XX"
                                 value={formData.phone}
                                 onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}

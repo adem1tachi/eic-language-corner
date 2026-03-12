@@ -22,7 +22,9 @@ export default function Login() {
         try {
             const { error } = await signIn(email, password)
             if (error) throw error
-            navigate('/')
+
+            const from = location.state?.from || '/profile'
+            navigate(from, { replace: true })
         } catch (err) {
             setError(err.message)
         } finally {
@@ -91,7 +93,7 @@ export default function Login() {
 
                     <p className="text-center text-sm text-neutral-400">
                         Don't have an account?{' '}
-                        <Link to="/signup" className="text-indigo-400 hover:text-indigo-300 font-semibold">
+                        <Link to="/signup" state={location.state} className="text-indigo-400 hover:text-indigo-300 font-semibold">
                             Create one
                         </Link>
                     </p>

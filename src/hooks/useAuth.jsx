@@ -116,13 +116,11 @@ export const AuthProvider = ({ children }) => {
     const updateProfile = async (updates) => {
         if (!user) throw new Error('No user logged in')
         try {
-            const { phone, ...profileUpdates } = updates
-
-            // 1. Update Profile Table (Excluding phone)
+            // Update Profile Table (Including phone if provided)
             const { data, error } = await supabase
                 .from('profiles')
                 .update({
-                    ...profileUpdates,
+                    ...updates,
                     updated_at: new Date().toISOString()
                 })
                 .eq('id', user.id)
@@ -130,19 +128,6 @@ export const AuthProvider = ({ children }) => {
                 .single()
 
             if (error) throw error
-
-            // 2. Update Auth Metadata for phone
-            if (phone !== undefined) {
-                const { data: authData, error: authError } = await supabase.auth.updateUser({
-                    data: { phone }
-                })
-                if (authError) {
-                    console.warn('[Auth] Metadata update failed:', authError.message)
-                } else if (authData?.user) {
-                    setUser(authData.user)
-                }
-            }
-
             setProfile(data)
             return { data, error }
         } catch (err) {

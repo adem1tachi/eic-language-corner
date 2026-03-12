@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { Mail, Lock, User, ArrowLeft } from 'lucide-react'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Mail, Lock, User, Phone, ArrowLeft } from 'lucide-react'
 import { Input, Button } from '../components/AuthUI'
 import { useAuth } from '../hooks/useAuth'
 import { telegramService } from '../lib/telegramService'
@@ -14,6 +14,7 @@ export default function SignUp() {
     const [error, setError] = useState(null)
     const { signUp } = useAuth()
     const navigate = useNavigate()
+    const location = useLocation()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -27,8 +28,9 @@ export default function SignUp() {
             // Trigger Welcome Telegram Message (Non-blocking)
             telegramService.sendWelcomeMessage(fullName)
 
-            // Redirect to home (immediate login because email confirmation is disabled)
-            navigate('/', { state: { message: 'Welcome! Your account has been created successfully.' } })
+            // Redirect to intended page or profile
+            const from = location.state?.from || '/profile'
+            navigate(from, { replace: true, state: { message: 'Welcome! Your account has been created successfully.' } })
         } catch (err) {
             setError(err.message)
         } finally {
@@ -80,13 +82,12 @@ export default function SignUp() {
                     />
 
                     <Input
-                        icon={User}
-                        label="Phone Number"
+                        icon={Phone}
+                        label="Phone Number (Optional)"
                         type="tel"
                         placeholder="+213 5XX XX XX XX"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        required
                     />
 
                     <Input
@@ -105,7 +106,7 @@ export default function SignUp() {
 
                     <p className="text-center text-sm text-neutral-400">
                         Already have an account?{' '}
-                        <Link to="/login" className="text-indigo-400 hover:text-indigo-300 font-semibold">
+                        <Link to="/login" state={location.state} className="text-indigo-400 hover:text-indigo-300 font-semibold">
                             Sign In
                         </Link>
                     </p>

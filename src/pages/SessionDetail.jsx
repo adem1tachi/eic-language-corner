@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom'
 import { Calendar, Clock, MapPin, Globe, Users, ArrowLeft, CheckCircle2, AlertCircle, Trash2, Lock, Unlock } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
@@ -9,6 +9,7 @@ import { telegramService } from '../lib/telegramService'
 export default function SessionDetail() {
     const { id } = useParams()
     const navigate = useNavigate()
+    const location = useLocation()
     const { user, profile } = useAuth()
     const [session, setSession] = useState(null)
     const [registrations, setRegistrations] = useState([])
@@ -55,7 +56,7 @@ export default function SessionDetail() {
 
     const handleRegister = async () => {
         if (!user) {
-            navigate('/login')
+            navigate('/login', { state: { from: location.pathname } })
             return
         }
 

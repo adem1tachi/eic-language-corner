@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom'
 import { Clock, Info, Check, Save, ArrowLeft, BarChart3, Users, Trash2 } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
@@ -9,6 +9,7 @@ import { telegramService } from '../lib/telegramService'
 export default function PollDetail() {
     const { id } = useParams()
     const navigate = useNavigate()
+    const location = useLocation()
     const { user, profile } = useAuth()
     const [poll, setPoll] = useState(null)
     const isOrganizer = poll?.organizer_id === user?.id || profile?.role === 'admin'
@@ -165,6 +166,21 @@ export default function PollDetail() {
                             <Button onClick={handleSave} loading={saving} className="shadow-xl shadow-indigo-600/20">
                                 <Save className="w-5 h-5 mr-3" /> Save My Availability
                             </Button>
+                        </div>
+                    )}
+
+                    {!user && (
+                        <div className="w-full sm:w-auto bg-neutral-900 border border-neutral-800 p-4 rounded-2xl flex flex-col sm:flex-row items-center gap-4">
+                            <p className="text-xs text-neutral-400 font-medium text-center sm:text-left">
+                                You must sign in to save your availability for this poll.
+                            </p>
+                            <Link
+                                to="/login"
+                                state={{ from: location.pathname }}
+                                className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap"
+                            >
+                                Sign In to Vote
+                            </Link>
                         </div>
                     )}
                 </div>

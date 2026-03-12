@@ -6,7 +6,7 @@ import { useAuth } from '../hooks/useAuth'
 
 export default function Polls() {
     const navigate = useNavigate()
-    const { profile } = useAuth()
+    const { profile, user } = useAuth()
     const [polls, setPolls] = useState([])
     const [loading, setLoading] = useState(true)
 

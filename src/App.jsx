@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route, Navigate, Link, Outlet } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate, Link, Outlet, useLocation } from 'react-router-dom'
 import { AuthProvider, useAuth } from './hooks/useAuth'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
@@ -25,7 +25,8 @@ function ProtectedRoute({ children, roleRequired }) {
         </div>
     )
 
-    if (!user) return <Navigate to="/login" replace />
+    const location = useLocation()
+    if (!user) return <Navigate to="/login" state={{ from: location.pathname }} replace />
 
     if (roleRequired && !roleRequired.includes(profile?.role)) {
         return <Navigate to="/" replace />
@@ -37,6 +38,7 @@ function ProtectedRoute({ children, roleRequired }) {
 function Layout() {
     const { user, profile } = useAuth()
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const location = useLocation()
 
     return (
         <div className="min-h-screen bg-neutral-950 text-neutral-50 font-sans flex flex-col">
@@ -77,7 +79,7 @@ function Layout() {
                                 </Link>
                             </div>
                         ) : (
-                            <Link to="/login" className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-full text-sm font-bold transition-all shadow-lg shadow-indigo-500/20 mr-2">
+                            <Link to="/login" state={{ from: location.pathname }} className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-full text-sm font-bold transition-all shadow-lg shadow-indigo-500/20 mr-2">
                                 <LogIn className="w-4 h-4" />
                                 <span>Sign In</span>
                             </Link>
@@ -103,6 +105,7 @@ function Layout() {
                         {!user && (
                             <Link
                                 to="/login"
+                                state={{ from: location.pathname }}
                                 onClick={() => setIsMenuOpen(false)}
                                 className="flex items-center gap-3 p-4 bg-indigo-600 text-white rounded-2xl font-bold"
                             >
